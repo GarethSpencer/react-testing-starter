@@ -25,7 +25,7 @@ function BrowseProducts() {
         setProducts(data);
       } catch (error) {
         if (error instanceof AxiosError) setErrorProducts(error.message);
-        else setErrorProducts("An unexpected error occurred");
+        else setErrorProducts("An unexpected error occurred fetching products");
       } finally {
         setProductsLoading(false);
       }
@@ -38,20 +38,28 @@ function BrowseProducts() {
         setCategories(data);
       } catch (error) {
         if (error instanceof AxiosError) setErrorCategories(error.message);
-        else setErrorCategories("An unexpected error occurred");
+        else
+          setErrorCategories(
+            "An unexpected error occurred fetching categories",
+          );
       } finally {
         setCategoriesLoading(false);
       }
     };
-    fetchCategories();
-    fetchProducts();
+    void fetchCategories();
+    void fetchProducts();
   }, []);
 
   if (errorProducts) return <div>Error: {errorProducts}</div>;
 
   const renderCategories = () => {
-    if (isCategoriesLoading) return <Skeleton />;
-    if (errorCategories) return <div>Error: {errorCategories}</div>;
+    if (isCategoriesLoading)
+      return (
+        <div role="progressbar" aria-label="Loading categories">
+          <Skeleton />
+        </div>
+      );
+    if (errorCategories) return null;
     return (
       <Select.Root
         onValueChange={(categoryId) =>
@@ -92,7 +100,10 @@ function BrowseProducts() {
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body
+          role={isProductsLoading ? "progressbar" : undefined}
+          aria-label={isProductsLoading ? "Loading products" : undefined}
+        >
           {isProductsLoading &&
             skeletons.map((skeleton) => (
               <Table.Row key={skeleton}>
