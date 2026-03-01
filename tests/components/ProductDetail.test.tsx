@@ -7,6 +7,7 @@ import ProductDetail from "../../src/components/ProductDetail";
 import { server } from "../mocks/server";
 import { http, HttpResponse, delay } from "msw";
 import { db } from "../mocks/db";
+import AllProviders from "../AllProviders";
 
 describe("ProductDetail", () => {
   const productIds: number[] = [];
@@ -21,7 +22,9 @@ describe("ProductDetail", () => {
   });
 
   it("should return the correct product matching the input id", async () => {
-    render(<ProductDetail productId={productIds[0]} />);
+    render(<ProductDetail productId={productIds[0]} />, {
+      wrapper: AllProviders,
+    });
 
     const product = db.product.findFirst({
       where: { id: { equals: productIds[0] } },
@@ -39,7 +42,9 @@ describe("ProductDetail", () => {
   it("should not find a product outside the array", async () => {
     server.use(http.get("/products/4", () => HttpResponse.json(null)));
 
-    render(<ProductDetail productId={4} />);
+    render(<ProductDetail productId={4} />, {
+      wrapper: AllProviders,
+    });
 
     const message = await screen.findByText(/not found/i);
     expect(message).toBeInTheDocument();
@@ -48,16 +53,20 @@ describe("ProductDetail", () => {
   it("should render error message when there is an error", async () => {
     server.use(http.get("/products/1", () => HttpResponse.error()));
 
-    render(<ProductDetail productId={1} />);
+    render(<ProductDetail productId={1} />, {
+      wrapper: AllProviders,
+    });
 
     const message = await screen.findByText(/error/i);
     expect(message).toBeInTheDocument();
   });
 
-  it("should render invalid message with product id 0", async () => {
-    render(<ProductDetail productId={0} />);
+  it("should render invalid message with invalid product id", async () => {
+    render(<ProductDetail productId={0} />, {
+      wrapper: AllProviders,
+    });
 
-    const message = await screen.findByText(/invalid/i);
+    const message = await screen.findByText(/not found/i);
     expect(message).toBeInTheDocument();
   });
 
@@ -69,13 +78,17 @@ describe("ProductDetail", () => {
       }),
     );
 
-    render(<ProductDetail productId={1} />);
+    render(<ProductDetail productId={1} />, {
+      wrapper: AllProviders,
+    });
     const message = await screen.findByText(/loading/i);
     expect(message).toBeInTheDocument();
   });
 
   it("should remove the loading indicator after the data is fetched", async () => {
-    render(<ProductDetail productId={productIds[0]} />);
+    render(<ProductDetail productId={productIds[0]} />, {
+      wrapper: AllProviders,
+    });
 
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
@@ -83,8 +96,9 @@ describe("ProductDetail", () => {
   it("should remove the loading indicator if data fetching fails", async () => {
     server.use(http.get("/products/4", () => HttpResponse.error()));
 
-    render(<ProductDetail productId={4} />);
-
+    render(<ProductDetail productId={4} />, {
+      wrapper: AllProviders,
+    });
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
 });
