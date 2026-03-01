@@ -1,9 +1,12 @@
 import { it, expect, describe } from "vitest";
+import { faker } from "@faker-js/faker";
+import { db } from "./mocks/db";
 
 describe("group", () => {
-  it("should", async () => {
-    const response = await fetch("/categories");
-    const data = await response.json();
-    expect(data).toHaveLength(3);
+  it("should", () => {
+    const product = db.product.create({ name: "Apple" });
+    db.product.create({ name: "Apple2" });
+
+    console.log(db.product.delete({ where: { id: { equals: product.id } } }));
   });
 });
