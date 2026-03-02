@@ -10,6 +10,7 @@ import BrowseProducts from "../../src/pages/BrowseProductsPage";
 import { CartProvider } from "../../src/providers/CartProvider";
 import { db, getProductsByCategory } from "../mocks/db";
 import { simulateDelay, simulateError } from "../utils";
+import AllProviders from "../AllProviders";
 
 describe("BrowseProductsPage", () => {
   const categories: Category[] = [];
@@ -142,6 +143,9 @@ const renderComponent = () => {
         <BrowseProducts />
       </Theme>
     </CartProvider>,
+    {
+      wrapper: AllProviders,
+    },
   );
 
   const getProductsSkeleton = () =>
