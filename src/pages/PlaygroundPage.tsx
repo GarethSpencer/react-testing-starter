@@ -1,9 +1,9 @@
-import BrowseProducts from "./BrowseProductsPage";
+import ProductForm from "../components/ProductForm";
 
 const PlaygroundPage = () => {
   return (
     <>
-      <BrowseProducts />
+      <ProductForm />
     </>
   );
 };
