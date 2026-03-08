@@ -1,5 +1,4 @@
-import { it, expect, describe } from "vitest";
-import { faker } from "@faker-js/faker";
+import { it, describe } from "vitest";
 import { db } from "./mocks/db";
 
 describe("group", () => {

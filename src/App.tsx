@@ -1,5 +1,5 @@
-import Layout from './pages/Layout';
-import Providers from './providers';
+import Layout from "./pages/Layout";
+import Providers from "./providers";
 
 function App() {
   return (

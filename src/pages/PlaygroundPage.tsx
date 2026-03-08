@@ -1,9 +1,9 @@
-import ProductForm from "../components/ProductForm";
+import Label from "../components/Label";
 
 const PlaygroundPage = () => {
   return (
     <>
-      <ProductForm />
+      <Label labelId="welcome" />
     </>
   );
 };
